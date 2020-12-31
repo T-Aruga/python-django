@@ -1,10 +1,23 @@
-{% for item in object_list %}
-<ul>
-  <li>
-    {{ item.title }}
-  </li>
-  <li>
-    {{ item.memo }}
-  </li>
-</ul>
-{% endfor %}
+{% extends 'base.html' %}
+
+{% block header %}
+  <div class="jumbotron jumbotron-fluid">
+    <div class="container">
+      <h1 class="display-4">Fluid jumbotron</h1>
+      <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
+    </div>
+  </div>
+{% endblock header %}
+
+{% block content %}
+<div class="container">
+    {% for item in object_list %}
+      <div class="alert alert-secondary" role="alert">
+          <p>{{ item.title }}</p>
+          <a href="#" class="btn btn-info active" role="button" aria-pressed="true">編集</a>
+          <a href="#" class="btn btn-primary active" role="button" aria-pressed="true">削除</a>
+          <a href="#" class="btn btn-success active" role="button" aria-pressed="true">詳細</a>
+      </div>
+  {% endfor %}
+</div>
+{% endblock content %}
