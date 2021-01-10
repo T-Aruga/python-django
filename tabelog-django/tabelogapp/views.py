@@ -1,3 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.views.generic import CreateView, ListView, UpdateView, DeleteView, TemplateView
 
-# Create your views here.
+class IndexView(TemplateView):
+    template_name = 'tabelogapp/index.html'
