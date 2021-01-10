@@ -19,14 +19,11 @@ class IndexView(TemplateView):
 
     def get_context_data(self, *args, **kwargs):
         searchform = SearchForm()
-        category_list = Category.objects.all().order_by('category_l')
-        pref_list = Pref.objects.all().order_by('pref')
         params = {
             'searchform': searchform,
-            'category_list': category_list,
-            'pref_list': pref_list,
             }
         return params
+
 
 def Search(request):
     if request.method == 'GET':
