@@ -113,3 +113,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'tabelogapp/static'),
 ]
+
+
+LOGIN_URL = 'tabelogapp:login'
+LOGIN_REDIRECT_URL = 'tabelogapp:index'
