@@ -10,6 +10,7 @@ import environ
 env = environ.Env()
 env.read_env('.env')
 GURUNABI_ACCESS_KEY=env('DJANGO_GURUNABI_ACCESS_KEY')
+DJANGO_YAHOO_MAP_API_KEY=env('DJANGO_YAHOO_MAP_API_KEY')
 
 def get_keyid():
     return GURUNABI_ACCESS_KEY
@@ -45,6 +46,22 @@ def Search(request):
         }
 
     return render (request, 'tabelogapp/search.html', params)
+
+def ShopInfo(request, restid):
+    keyid = get_keyid()
+    id = restid
+    query = get_gnavi_data(id, "", "", "", 1)
+    res_list = rest_search(query)
+    restaurants_info = extract_restaurant_info(res_list)
+
+    params = {
+        'title': '店舗詳細',
+        'restaurants_info': restaurants_info,
+        'map_api_key': DJANGO_YAHOO_MAP_API_KEY
+        }
+
+    return render (request, 'tabelogapp/shop_info.html', params)
+
 
 
 def get_gnavi_data(id, category_l, pref, freeword, hit_per_page):
