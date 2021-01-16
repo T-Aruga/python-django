@@ -15,6 +15,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = 'amazon.User'
+LOGIN_URL = 'amazon:login'
+LOGIN_REDIRECT_URL = 'amazon:lp'
+LOGOUT_REDIRECT_URL = 'amazon:lp'
+
 
 # Application definition
 

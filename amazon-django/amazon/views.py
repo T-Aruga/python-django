@@ -1,5 +1,7 @@
 from django.views import generic
 from .models import *
+from django.contrib.auth.views import LoginView
+from .forms import *
 
 class Lp(generic.TemplateView):
     template_name = 'amazon/lp.html'
@@ -24,3 +26,7 @@ class ItemList(generic.ListView):
 class ItemDetail(generic.DetailView):
     model = Product
     template_name = 'amazon/item_detail.html'
+
+class Login(LoginView):
+    form_class = LoginForm
+    template_name = 'amazon/login.html'
