@@ -5,6 +5,7 @@ from django.contrib.auth.models import PermissionsMixin
 from django.core.mail import send_mail
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
+from django.db.models import F, Sum
 
 # Create your models here.
 class Product(models.Model):
@@ -60,9 +61,8 @@ class MyUserManager(BaseUserManager):
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must have is_superuser=True.')
         return self._create_user(email, password, **extra_fields)
-# [5-1] カスタムユーザのマネージャクラスを定義 ここまで
 
-# [5-2] カスタムユーザクラスを定義 ここから
+
 class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = 'ユーザ'
@@ -106,3 +106,34 @@ class User(AbstractBaseUser, PermissionsMixin):
         メールアドレスを返す
         """
         return self.email
+
+class ShoppingCart(models.Model):
+
+    user = models.OneToOneField(
+        User,
+        verbose_name = 'ユーザ',
+        related_name = 'cart',
+        on_delete = models.CASCADE
+    )
+    @property
+    def item_count(self):
+        return self.cart_items.all().aggregate(amount = Sum('amount'))['amount']
+    @property
+    def total_price(self):
+        return self.cart_items.all().aggregate(total=Sum(F('product__price') * F('amount')))['total']
+
+class ShoppingCartItem(models.Model):
+    cart = models.ForeignKey(
+        ShoppingCart,
+        related_name = 'cart_items',
+        verbose_name = 'ショッピングカート',
+        on_delete = models.CASCADE
+    )
+    product = models.ForeignKey(
+        Product,
+        verbose_name = '商品',
+        on_delete = models.CASCADE
+    )
+    amount = models.IntegerField(
+        verbose_name = '数量'
+    )

@@ -25,18 +25,30 @@
                         <h2>{{ object.name }}</h2>
                         <span>¥{{ object.price }}</span>
                     </p>
+
                     <p class="lead font-weight-bold">商品説明</p>
                     <p>{{ object.description }}</p>
+
+                    <!--  [7-5 追加]カートに追加ボタン ここから -->
+                    {% if user.is_authenticated %}
+                    <form method="post" action="{% url 'amazon:cart' user.cart.pk %}" class="d-flex justify-content-left">
+                        {% csrf_token %}
+                        <!-- Default input -->
+                        <input name="product_pk" type="hidden" value="{{ object.pk }}">
+                        <input name="amount" type="number" value="1" aria-label="Search" class="form-control" style="width: 100px; margin-right: 1rem">
+                        <button class="btn btn-primary btn-md my-0 p" type="submit">Add to cart
+                        <i class="fas fa-shopping-cart ml-1"></i>
+                        </button>
+                    </form>
+                    {% endif %}
+                     <!--  [7-5 追加]カートに追加ボタン ここまで -->
                 </div>
             </div>
         </div>
         <hr>
         <div class="row d-flex justify-content-center wow fadeIn">
-
             <div class="col-md-6 text-center">
-
                 <h4 class="my-4 h4">Additional information</h4>
-
                 <p>
                     Djangoのようなフレームワークを利用しても、ページのデザインを綺麗にすることはできません。
                     恐らくこの教材で学習している方のほとんどがどちらかというとサーバサイドを勉強している方が多いのかと思慮しますので、
@@ -49,14 +61,14 @@
         </div>
         <div class="row wow fadeIn">
             <div class="col-lg-4 col-md-12 mb-4">
-                <img src="https://techpit-market-prod.s3.amazonaws.com/uploads/part_attachment/file/3695/b76122f9-c56b-4920-9634-03ea1e95855a.jpg" class="img-fluid" alt="">
+                <img src="https://techpit-market-prod.s3.amazonaws.com/uploads/part_attachment/file/3774/221f600f-8f19-4974-8532-686012b65ed3.jpg" class="img-fluid" alt="">
 
             </div>
             <div class="col-lg-4 col-md-6 mb-4">
-                <img src="https://techpit-market-prod.s3.amazonaws.com/uploads/part_attachment/file/3696/2124690a-14c9-450c-93ea-28a97c3f4e38.jpg" class="img-fluid" alt="">
+                <img src="https://techpit-market-prod.s3.amazonaws.com/uploads/part_attachment/file/3783/0ba6d54d-d136-4fbe-9220-9af67e0e4012.jpg" class="img-fluid" alt="">
             </div>
             <div class="col-lg-4 col-md-6 mb-4">
-                <img src="https://techpit-market-prod.s3.amazonaws.com/uploads/part_attachment/file/3697/f78b1352-20d8-48c3-9d60-1c5c92a137c6.jpg" class="img-fluid" alt="">
+                <img src="https://techpit-market-prod.s3.amazonaws.com/uploads/part_attachment/file/3789/3c91f930-f3ad-4f23-8bc3-f422de2d76d0.jpg" class="img-fluid" alt="">
 
             </div>
         </div>
