@@ -1,16 +1,17 @@
 {% load static %}
 <!doctype html>
-<html>
+    <html>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <title>Finchart</title>
+
+        <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
         <link rel="stylesheet" href="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.css"/>
         <script src="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.js"></script>
-        <!-- Chart.jsのための追加 開始 -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
-        <!-- Chart.jsのための追加 終了 -->
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -23,6 +24,20 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="{% url 'finchart:index' %}">Home</a>
                     </li>
+
+                    <!-- ========ここから追加======== -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Company
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            {% for item in company_list %}
+                            <a class="dropdown-item" href="{% url 'finchart:company' item.id %}">{{ item.name }}</a>
+                            {% endfor %}
+                        </div>
+                    </li>
+                    <!-- ========ここまで追加======== -->
+
                 </ul>
             </div>
         </nav>
