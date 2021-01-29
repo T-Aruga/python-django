@@ -16,10 +16,11 @@
                         <div class="table-responsive">
                             <table width="100%" class="table table-bordered display nowrap">
                                 <tr>
-                                    <th rowspan="2" width="120px"></th>
-                                    {% for item in fstatement_list reversed %}
-                                        <th colspan="2" width="120px" class="center"><a href="">{{ item.fiscal_year }}</a></th>
-                                    {% endfor %}
+                                <th rowspan="2" width="120px"></th>
+                                {% for item in fstatement_list reversed %}
+                                <!-- ========<a>タグ内の href="" を変更======== -->
+                                    <th colspan="2" width="120px" class="center"><a href="{% url 'finchart:fstatement' item.pk %}">{{ item.fiscal_year }}</a></th>
+                                {% endfor %}
                                 </tr>
                                 <tr style="text-align: center;">
                                     <td width="120px">金額</td>
@@ -69,18 +70,18 @@
                                     <td colspan="9" class="title" style="text-align: left;">負債の部</td>
                                 </tr>
                                 <tr>
-                                    <th>流動負債</th>
-                                    {% for item in fstatement_list reversed %}
-                                        <td class="amount">{{ item.bs_current_liabilities|intcomma }}</td>
-                                        <td class="rate">{{ item.current_liabilities_rate|floatformat:1 }}％</td>
-                                    {% endfor %}
+                                <th>流動負債</th>
+                                {% for item in fstatement_list reversed %}
+                                    <td class="amount">{{ item.bs_current_liabilities|intcomma }}</td>
+                                    <td class="rate">{{ item.current_liabilities_rate|floatformat:1 }}％</td>
+                                {% endfor %}
                                 </tr>
                                 <tr>
                                     <th>固定負債</th>
-                                    {% for item in fstatement_list reversed %}
-                                        <td class="amount">{{ item.bs_fixed_liabilities|intcomma }}</td>
-                                        <td class="rate">{{ item.fixed_liabilities_rate|floatformat:1 }}％</td>
-                                    {% endfor %}
+                                {% for item in fstatement_list reversed %}
+                                    <td class="amount">{{ item.bs_fixed_liabilities|intcomma }}</td>
+                                    <td class="rate">{{ item.fixed_liabilities_rate|floatformat:1 }}％</td>
+                                {% endfor %}
                                 </tr>
                                 <tr>
                                     <td colspan="9" class="title">純資産の部</td>
@@ -95,7 +96,8 @@
                                 <tr>
                                     <th></th>
                                     {% for item in fstatement_list reversed %}
-                                        <th colspan="2" width="120px" class="center"><a href="">{{ item.fiscal_year }}</a></th>
+                                        <!-- ========<a>タグ内の href="" を変更======== -->
+                                        <th colspan="2" width="120px" class="center"><a href="{% url 'finchart:fstatement' item.pk %}">{{ item.fiscal_year }}</a></th>
                                     {% endfor %}
                                 </tr>
                                 <tr>
@@ -146,12 +148,14 @@
                                 <tr>
                                     <th></th>
                                     {% for item in fstatement_list reversed %}
-                                        <th colspan="2" width="120px" class="center"><a href="">{{ item.fiscal_year }}</a></th>
+                                        <!-- ========<a>タグ内の href="" を変更======== -->
+                                        <th colspan="2" width="120px" class="center"><a href="{% url 'finchart:fstatement' item.pk %}">{{ item.fiscal_year }}</a></th>
                                     {% endfor %}
                                 </tr>
                                 <tr>
                                     <td colspan="9" class="bg-title" style="text-align: left;">キャッシュフロー</td>
                                 </tr>
+                                <tr>
                                     <td>営業ＣＦ</td>
                                     {% for item in fstatement_list reversed %}
                                         <td colspan="2" class="amount">{{ item.cf_operating|intcomma }}</td>
@@ -173,7 +177,7 @@
                                     <th>合計ＣＦ</th>
                                     {% for item in fstatement_list reversed %}
                                         <td colspan="2" class="amount">{{ item.cf_total_amount|intcomma }}</td>
-                                    {% endfor %}
+                                {% endfor %}
                                 </tr>
                             </table>
                             <br>
@@ -196,21 +200,18 @@
                             var data_sales = [ {% for item in fstatement_list reversed %} {{item.pl_gross_sales}}, {% endfor %} ];
                             var data_gross_profit = [ {% for item in fstatement_list reversed %} {{item.pl_gross_profit}}, {% endfor %} ];
                             var data_operating_profit = [ {% for item in fstatement_list reversed %} {{item.pl_operating_profit}}, {% endfor %} ];
-
-                            //========ここから3行追加========
                             var data_total_assets = [ {% for item in fstatement_list reversed %} {{item.bs_total_assets }}, {% endfor %} ];
                             var data_fixed_liabilities = [ {% for item in fstatement_list reversed %} {{item.bs_fixed_liabilities }}, {% endfor %} ];
                             var data_net_assets = [ {% for item in fstatement_list reversed %} {{item.bs_net_assets }}, {% endfor %} ];
-                            //========ここまで追加========
 
                             var myChart = new Chart(ctx, {
-                                type: 'bar',//line から bar に変更
+                                type: 'bar',
                                 data: {
                                     labels: label_fyear,
                                     datasets: [{
                                         label: '売上高',
                                         data: data_sales,
-                                        type: 'line',//この行（type）を追加
+                                        type: 'line',
                                         fill: false,
                                         lineTension: 0,
                                         backgroundColor: 'rgba(255, 99, 132, 0.2)',
@@ -219,7 +220,7 @@
                                     },{
                                         label: '売上総利益',
                                         data: data_gross_profit,
-                                        type: 'line',//この行（type）を追加
+                                        type: 'line',
                                         fill: false,
                                         lineTension: 0,
                                         backgroundColor:'rgba(54, 162, 235, 0.2)',
@@ -228,16 +229,13 @@
                                     },{
                                         label: '営業利益',
                                         data: data_operating_profit,
-                                        type: 'line',///この行（type）を追加
+                                        type: 'line',
                                         fill: false,
                                         lineTension: 0,
                                         backgroundColor:'rgba(255, 206, 86, 0.2)',
                                         borderColor: 'rgba(255, 206, 86, 1)',
                                         borderWidth: 2,
-                                    },
-
-                                    //========ここから追加（総資産、固定負債、純資産）========
-                                    {
+                                    },{
                                         label: '総資産',
                                         data: data_total_assets,
                                         backgroundColor: 'rgba(75, 192, 192, 0.2)',
@@ -255,10 +253,7 @@
                                         backgroundColor: 'rgba(153, 102, 255, 0.2)',
                                         borderColor: 'rgba(153, 102, 255, 1)',
                                         borderWidth: 1,
-                                    }
-                                    //========ここまで追加（総資産、固定負債、純資産）========
-
-                                    ]
+                                    }]
                                 },
                             });
                         </script>
